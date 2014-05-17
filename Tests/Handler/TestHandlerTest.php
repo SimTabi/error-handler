@@ -29,22 +29,20 @@ class TestHandlerTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($this->testHandler, $handlers[0]);
 	}
 
-	/**
-	 * @dataProvider getConfigurations
-	 */
-	public function testTestHandler($error, $exception)
+	public function testTestHandlerHandlesError()
 	{
-		$this->errorHandler->register($error, $exception);
+		$this->assertFalse($this->testHandler->getErrorHandled());
+		$this->errorHandler->register(true, false);
+		$this->errorHandler->handleError(E_USER_ERROR, 'message', __FILE__, __LINE__);
+		$this->assertTrue($this->testHandler->getErrorHandled());
 	}
 
-	public function getConfigurations()
+	public function testTestHandlerHandlerException()
 	{
-		return array(
-			array(false, false),
-			array(false, true),
-			array(true, false),
-			array(true, true),
-		);
+		$this->assertFalse($this->testHandler->getExceptionHandled());
+		$this->errorHandler->register(false, true);
+		$this->errorHandler->handleException(new \Exception());
+		$this->assertTrue($this->testHandler->getExceptionHandled());
 	}
 
 	public function setUp()

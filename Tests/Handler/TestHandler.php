@@ -25,4 +25,20 @@ class TestHandler extends AbstractHandler
 	{
 		$this->exceptionHandled = true;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getErrorHandled()
+	{
+		return $this->errorHandled;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getExceptionHandled()
+	{
+		return $this->exceptionHandled;
+	}
 }
