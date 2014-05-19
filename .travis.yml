@@ -11,7 +11,11 @@ allow_failures:
   - php: hhvm-nightly
 
 before_script:
-  - composer install --no-interaction
+  - composer install --dev
+  - composer update satooshi/php-coveralls --dev
+
+after_script:
+  - php vendor/bin/coveralls -v -c .coveralls.yml
 
 script:
-  - phpunit --coverage-text
+  - phpunit --coverage-text --coverage-clover clover.xml
