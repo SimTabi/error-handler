@@ -11,11 +11,12 @@ allow_failures:
   - php: hhvm-nightly
 
 before_script:
+  - mkdir -p build/logs
   - composer install --dev
   - composer require --dev "satooshi/php-coveralls:dev-master"
 
 after_script:
-  - php vendor/bin/coveralls -v -c .coveralls.yml
+  - php vendor/bin/coveralls -v
 
 script:
-  - phpunit --coverage-text --coverage-clover clover.xml
+  - phpunit --coverage-text --coverage-clover build/logs/clover.xml
