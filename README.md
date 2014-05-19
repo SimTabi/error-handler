@@ -1,5 +1,5 @@
-ErrorHandler
-============
+error-handler
+=============
 
 [![Build Status](https://travis-ci.org/prgTW/error-handler.svg?branch=master)](https://travis-ci.org/prgTW/error-handler)
 [![Coverage Status](https://coveralls.io/repos/prgTW/error-handler/badge.png)](https://coveralls.io/r/prgTW/error-handler)
