@@ -213,11 +213,20 @@ class ErrorHandler
 		return $this->shutdownHandlerRegistered;
 	}
 
-	/** {@inheritdoc} */
-	public function handleError($errNo, $errStr, $errFile, $errLine, $errContext = array())
+	/**
+	 * @param int      $errNo
+	 * @param string   $errStr
+	 * @param string   $errFile
+	 * @param int      $errLine
+	 * @param array    $errContext
+	 * @param Metadata $metadata
+	 *
+	 * @return $this
+	 */
+	public function handleError($errNo, $errStr, $errFile, $errLine, $errContext = array(), Metadata $metadata = null)
 	{
 		$error    = ErrorException::fromPhpError($errNo, $errStr, $errFile, $errLine, $errContext);
-		$metadata = $this->getMetadata($error);
+		$metadata = $this->getMetadata($error, $metadata);
 
 		foreach ($this->handlers as $handler)
 		{
@@ -229,10 +238,15 @@ class ErrorHandler
 		return $this;
 	}
 
-	/** {@inheritdoc} */
-	public function handleException(\Exception $exception)
+	/**
+	 * @param \Exception $exception
+	 * @param Metadata   $metadata
+	 *
+	 * @return $this
+	 */
+	public function handleException(\Exception $exception, Metadata $metadata = null)
 	{
-		$metadata = $this->getMetadata($exception);
+		$metadata = $this->getMetadata($exception, $metadata);
 
 		foreach ($this->handlers as $handler)
 		{
@@ -246,6 +260,7 @@ class ErrorHandler
 
 	/**
 	 * Handle fatal errors and such
+	 *
 	 * @codeCoverageIgnore
 	 */
 	public function handleShutdown()
@@ -297,12 +312,13 @@ class ErrorHandler
 
 	/**
 	 * @param \Exception $e
+	 * @param Metadata   $metadata
 	 *
 	 * @return Metadata
 	 */
-	public function getMetadata(\Exception $e)
+	public function getMetadata(\Exception $e, Metadata $metadata = null)
 	{
-		$metadata = new Metadata();
+		$metadata = isset($metadata) ? $metadata : new Metadata();
 
 		foreach ($this->processors as $processor)
 		{
