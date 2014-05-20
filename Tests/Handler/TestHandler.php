@@ -3,10 +3,10 @@
 namespace prgTW\ErrorHandler\Tests\Handler;
 
 use prgTW\ErrorHandler\Error\ErrorException;
-use prgTW\ErrorHandler\Handler\AbstractHandler;
+use prgTW\ErrorHandler\Handler\HandlerInterface;
 use prgTW\ErrorHandler\Metadata\Metadata;
 
-class TestHandler extends AbstractHandler
+class TestHandler implements HandlerInterface
 {
 	/** @var bool */
 	protected $exceptionHandled = false;

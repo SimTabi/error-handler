@@ -6,21 +6,11 @@ use prgTW\ErrorHandler\ErrorHandler;
 
 class TestHandlerTest extends \PHPUnit_Framework_TestCase
 {
-	/** @var array */
-	protected static $testConfiguration = array(
-		'option' => 'value',
-	);
-
 	/** @var TestHandler */
 	protected $testHandler;
 
 	/** @var ErrorHandler */
 	protected $errorHandler;
-
-	public function testConfigurationPassed()
-	{
-		$this->assertEquals(self::$testConfiguration, $this->testHandler->getConfiguration());
-	}
 
 	public function testTestHandlerConnected()
 	{
@@ -47,7 +37,7 @@ class TestHandlerTest extends \PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-		$this->testHandler  = new TestHandler(self::$testConfiguration);
+		$this->testHandler  = new TestHandler();
 		$this->errorHandler = new ErrorHandler();
 		$this->errorHandler->addHandler($this->testHandler);
 	}
