@@ -37,6 +37,10 @@ class TestProcessorTest extends \PHPUnit_Framework_TestCase
 			'tag1' => 1,
 			'tag2' => 2,
 		), $metadata->getTags());
+		$this->assertEquals(array(
+			'metadatum1' => 1,
+			'metadatum2' => 2,
+		), $metadata->getMetadata());
 	}
 
 	public function setUp()

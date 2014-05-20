@@ -21,10 +21,12 @@ class TestHandlerTest extends \PHPUnit_Framework_TestCase
 
 	public function testTestHandlerHandlesError()
 	{
+		$context = array('option' => 'value');
 		$this->assertFalse($this->testHandler->getErrorHandled());
 		$this->errorHandler->register(true, false);
-		$this->errorHandler->handleError(E_USER_ERROR, 'message', __FILE__, __LINE__);
+		$this->errorHandler->handleError(E_USER_ERROR, 'message', __FILE__, __LINE__, $context);
 		$this->assertTrue($this->testHandler->getErrorHandled());
+		$this->assertEquals($context, $this->testHandler->getContext());
 	}
 
 	public function testTestHandlerHandlerException()

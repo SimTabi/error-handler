@@ -14,10 +14,14 @@ class TestHandler implements HandlerInterface
 	/** @var bool */
 	protected $errorHandled = false;
 
+	/** @var array */
+	protected $context;
+
 	/** {@inheritdoc} */
 	public function handleError(ErrorException $error, Metadata $metadata)
 	{
 		$this->errorHandled = true;
+		$this->context = $error->getContext();
 	}
 
 	/** {@inheritdoc} */
@@ -40,5 +44,13 @@ class TestHandler implements HandlerInterface
 	public function getExceptionHandled()
 	{
 		return $this->exceptionHandled;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getContext()
+	{
+		return $this->context;
 	}
 }

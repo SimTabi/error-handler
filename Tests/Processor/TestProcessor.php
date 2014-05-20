@@ -24,6 +24,12 @@ class TestProcessor implements ProcessorInterface
 		));
 		$metadata->setTag('tag2', 2);
 		$metadata->removeTag('tag3');
+		$metadata->setMetadata(array(
+			'metadatum1' => 1,
+			'metadatum3' => 3,
+		));
+		$metadata->setMetadatum('metadatum2', 2);
+		$metadata->removeMetadatum('metadatum3');
 	}
 
 	/**
