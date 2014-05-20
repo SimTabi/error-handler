@@ -5,16 +5,16 @@ namespace prgTW\ErrorHandler\Metadata;
 class Metadata
 {
 	/** @var string */
-	protected $appName = '';
+	protected $category = '';
 
 	/** @var string */
 	protected $appRootDir = '';
 
 	/** @var string */
-	protected $stage = '';
+	protected $appVersion = '';
 
 	/** @var string */
-	protected $revision = '';
+	protected $stage = '';
 
 	/** @var array */
 	protected $tags = array();
@@ -43,13 +43,13 @@ class Metadata
 	}
 
 	/**
-	 * @param string $revision
+	 * @param string $appVersion
 	 *
 	 * @return $this
 	 */
-	public function setRevision($revision)
+	public function setAppVersion($appVersion)
 	{
-		$this->revision = $revision;
+		$this->appVersion = $appVersion;
 
 		return $this;
 	}
@@ -57,9 +57,9 @@ class Metadata
 	/**
 	 * @return string
 	 */
-	public function getRevision()
+	public function getAppVersion()
 	{
-		return $this->revision;
+		return $this->appVersion;
 	}
 
 	/**
@@ -83,13 +83,13 @@ class Metadata
 	}
 
 	/**
-	 * @param string $appName
+	 * @param string $category
 	 *
 	 * @return $this
 	 */
-	public function setAppName($appName)
+	public function setCategory($category)
 	{
-		$this->appName = $appName;
+		$this->category = $category;
 
 		return $this;
 	}
@@ -97,9 +97,9 @@ class Metadata
 	/**
 	 * @return null|string
 	 */
-	public function getAppName()
+	public function getCategory()
 	{
-		return $this->appName;
+		return $this->category;
 	}
 
 	/**

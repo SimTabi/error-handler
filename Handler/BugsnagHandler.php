@@ -16,7 +16,7 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 		$metadataArr = array_merge($metadata->getMetadata(), $metadata->getTags());
 		$this->setReleaseStage($metadata->getStage());
 		$this->setProjectRoot($metadata->getAppRootDir());
-		$this->setAppVersion($metadata->getRevision());
+		$this->setAppVersion($metadata->getAppVersion());
 		$this->setContext($error->getContext());
 		$this->notifyError(ErrorException::$phpErrors[$error->getCode()], $error->getMessage(), $metadataArr, $error->getSeverity());
 	}
@@ -27,7 +27,7 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 		$metadataArr = array_merge($metadata->getMetadata(), $metadata->getTags());
 		$this->setReleaseStage($metadata->getStage());
 		$this->setProjectRoot($metadata->getAppRootDir());
-		$this->setAppVersion($metadata->getRevision());
+		$this->setAppVersion($metadata->getAppVersion());
 		$this->notifyException($exception, $metadataArr);
 	}
 

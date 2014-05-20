@@ -14,10 +14,10 @@ class TestProcessor implements ProcessorInterface
 	public function process(Metadata $metadata, \Exception $exception)
 	{
 		$this->callbackExecuted = true;
-		$metadata->setAppName('app_name');
+		$metadata->setCategory('category');
 		$metadata->setAppRootDir('app_root_dir');
 		$metadata->setStage('stage');
-		$metadata->setRevision('revision');
+		$metadata->setAppVersion('app_version');
 		$metadata->setTags(array(
 			'tag1' => 1,
 			'tag3' => 3,
