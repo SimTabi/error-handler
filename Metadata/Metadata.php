@@ -19,6 +19,9 @@ class Metadata
 	/** @var array */
 	protected $tags = array();
 
+	/** @var array */
+	protected $metadata = array();
+
 	/**
 	 * @param string $stage
 	 *
@@ -120,31 +123,78 @@ class Metadata
 	}
 
 	/**
-	 * @param string $tagName
+	 * @param string $name
 	 * @param mixed  $value
 	 *
 	 * @return $this
 	 */
-	public function setTag($tagName, $value)
+	public function setTag($name, $value)
 	{
-		$this->tags[$tagName] = $value;
+		$this->tags[$name] = $value;
 
 		return $this;
 	}
 
 	/**
-	 * @param string $tagName
+	 * @param string $name
 	 *
 	 * @return $this
 	 */
-	public function removeTag($tagName)
+	public function removeTag($name)
 	{
-		if (isset($this->tags[$tagName]))
+		if (isset($this->tags[$name]))
 		{
-			unset($this->tags[$tagName]);
+			unset($this->tags[$name]);
 		}
 
 		return $this;
 	}
 
+	/**
+	 * @param array $metadata
+	 *
+	 * @return $this
+	 */
+	public function setMetadata(array $metadata)
+	{
+		$this->metadata = $metadata;
+
+		return $this;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getMetadata()
+	{
+		return $this->metadata;
+	}
+
+	/**
+	 * @param string $name
+	 * @param mixed  $value
+	 *
+	 * @return $this
+	 */
+	public function setMetadatum($name, $value)
+	{
+		$this->metadata[$name] = $value;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $name
+	 *
+	 * @return $this
+	 */
+	public function removeMetadatum($name)
+	{
+		if (isset($this->metadata[$name]))
+		{
+			unset($this->metadata[$name]);
+		}
+
+		return $this;
+	}
 }

@@ -14,7 +14,7 @@ class ErrorException extends \ErrorException
 	const EMERGENCY = 600;
 
 	/** @var array */
-	private static $phpErrors = array(
+	public static $phpErrors = array(
 		0                   => 'UNKNOWN',
 		E_NOTICE            => 'E_NOTICE',
 		E_WARNING           => 'E_WARNING',
@@ -41,6 +41,14 @@ class ErrorException extends \ErrorException
 		$severity = self::translateSeverity($code);
 		parent::__construct($message, $code, $severity, $filename, $lineNo);
 		$this->context = $context;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getContext()
+	{
+		return $this->context;
 	}
 
 	/**
