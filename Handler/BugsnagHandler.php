@@ -5,6 +5,9 @@ namespace prgTW\ErrorHandler\Handler;
 use prgTW\ErrorHandler\Error\ErrorException;
 use prgTW\ErrorHandler\Metadata\Metadata;
 
+/**
+ * @codeCoverageIgnore
+ */
 class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 {
 	/** {@inheritdoc} */
