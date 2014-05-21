@@ -29,7 +29,6 @@ class TestProcessorTest extends \PHPUnit_Framework_TestCase
 	public function testMetadataAltered()
 	{
 		$metadata = $this->errorHandler->getMetadata(new \Exception());
-		$this->assertEquals('category', $metadata->getCategory());
 		$this->assertEquals('app_root_dir', $metadata->getAppRootDir());
 		$this->assertEquals('stage', $metadata->getStage());
 		$this->assertEquals('app_version', $metadata->getAppVersion());
@@ -41,6 +40,7 @@ class TestProcessorTest extends \PHPUnit_Framework_TestCase
 			'metadatum1' => 1,
 			'metadatum2' => 2,
 		), $metadata->getMetadata());
+		$this->assertEquals(array('category1', 'category2'), $metadata->getCategories());
 	}
 
 	public function setUp()

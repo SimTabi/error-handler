@@ -14,7 +14,6 @@ class TestProcessor implements ProcessorInterface
 	public function process(Metadata $metadata, \Exception $exception)
 	{
 		$this->callbackExecuted = true;
-		$metadata->setCategory('category');
 		$metadata->setAppRootDir('app_root_dir');
 		$metadata->setStage('stage');
 		$metadata->setAppVersion('app_version');
@@ -30,6 +29,10 @@ class TestProcessor implements ProcessorInterface
 		));
 		$metadata->setMetadatum('metadatum2', 2);
 		$metadata->removeMetadatum('metadatum3');
+
+		$metadata->setCategories(array('category1', 'category2'));
+		$metadata->addCategory('category3');
+		$metadata->removeCategory('category3');
 	}
 
 	/**

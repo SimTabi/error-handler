@@ -27,27 +27,58 @@ class ErrorHandler
 	/** @var HandlerInterface[] */
 	protected $handlers = array();
 
+	/** @var array */
+	protected $handlerCategories = array();
+
 	/** @var ProcessorInterface[] */
 	protected $processors = array();
 
 	/**
 	 * @param HandlerInterface $handler
+	 * @param array            $categories
 	 *
 	 * @return $this
+	 * @throws \LogicException when category is not of type "string"
 	 */
-	public function addHandler(HandlerInterface $handler)
+	public function addHandler(HandlerInterface $handler, array $categories = array())
 	{
-		$this->handlers[] = $handler;
+		$categories            = $this->getCategories($categories);
+		$hash                  = spl_object_hash($handler);
+		$this->handlers[$hash] = $handler;
+		if (isset($this->handlerCategories[$hash]))
+		{
+			$this->handlerCategories[$hash] = array_merge($this->handlerCategories[$hash], $categories);
+		}
+		else
+		{
+			$this->handlerCategories[$hash] = $this->getCategories($categories);
+		}
 
 		return $this;
 	}
 
 	/**
+	 * @param array $categories
+	 *
 	 * @return HandlerInterface[]
+	 * @throws \LogicException when category is not of type "string"
 	 */
-	public function getHandlers()
+	public function getHandlers(array $categories = array())
 	{
-		return $this->handlers;
+		$handlers   = $this->handlers;
+		$categories = $this->getCategories($categories);
+		if ($categories !== array())
+		{
+			foreach ($handlers as $hash => $handler)
+			{
+				if (!array_intersect($this->handlerCategories[$hash], $categories))
+				{
+					unset($handlers[$hash]);
+				}
+			}
+		}
+
+		return array_values($handlers);
 	}
 
 	/**
@@ -326,5 +357,24 @@ class ErrorHandler
 		}
 
 		return $metadata;
+	}
+
+	/**
+	 * @param array $categories
+	 *
+	 * @return array
+	 * @throws \LogicException when category is not of type "string"
+	 */
+	private function getCategories(array $categories = array())
+	{
+		array_walk($categories, function ($category)
+		{
+			if (!is_string($category))
+			{
+				throw new \LogicException('Category must be of a type "string"');
+			}
+		});
+
+		return array_values($categories);
 	}
 }

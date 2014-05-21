@@ -4,8 +4,8 @@ namespace prgTW\ErrorHandler\Metadata;
 
 class Metadata
 {
-	/** @var string */
-	protected $category = '';
+	/** @var array */
+	protected $categories = array();
 
 	/** @var string */
 	protected $appRootDir = '';
@@ -83,13 +83,18 @@ class Metadata
 	}
 
 	/**
-	 * @param string $category
+	 * @param array $categories
 	 *
+	 * @throws \LogicException when category is not of type "string"
 	 * @return $this
 	 */
-	public function setCategory($category)
+	public function setCategories(array $categories)
 	{
-		$this->category = $category;
+		$this->categories = array();
+		foreach ($categories as $category)
+		{
+			$this->addCategory($category);
+		}
 
 		return $this;
 	}
@@ -97,9 +102,46 @@ class Metadata
 	/**
 	 * @return null|string
 	 */
-	public function getCategory()
+	public function getCategories()
 	{
-		return $this->category;
+		return array_values($this->categories);
+	}
+
+	/**
+	 * @param string $category
+	 *
+	 * @return $this
+	 * @throws \LogicException when category is not of type "string"
+	 */
+	public function addCategory($category)
+	{
+		if (!is_string($category))
+		{
+			throw new \LogicException('Category must be of a type "string"');
+		}
+		$this->categories[$category] = $category;
+
+		return $this;
+	}
+
+	/**
+	 * @param $category
+	 *
+	 * @return $this
+	 * @throws \LogicException when category is not of type "string"
+	 */
+	public function removeCategory($category)
+	{
+		if (!is_string($category))
+		{
+			throw new \LogicException('Category must be of a type "string"');
+		}
+		if (isset($this->categories[$category]))
+		{
+			unset($this->categories[$category]);
+		}
+
+		return $this;
 	}
 
 	/**
