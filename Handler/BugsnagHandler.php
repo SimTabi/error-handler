@@ -11,7 +11,7 @@ use prgTW\ErrorHandler\Metadata\Metadata;
 class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 {
 	/** {@inheritdoc} */
-	public function handleError(ErrorException $error, Metadata $metadata)
+	public function handleError(ErrorException $error, Metadata $metadata = null)
 	{
 		$metadataArr = array_merge($metadata->getMetadata(), $metadata->getTags());
 		$this->setReleaseStage($metadata->getStage());
@@ -22,7 +22,7 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	}
 
 	/** {@inheritdoc} */
-	public function handleException(\Exception $exception, Metadata $metadata)
+	public function handleException(\Exception $exception, Metadata $metadata = null)
 	{
 		$metadataArr = array_merge($metadata->getMetadata(), $metadata->getTags());
 		$this->setReleaseStage($metadata->getStage());

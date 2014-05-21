@@ -18,14 +18,14 @@ class TestHandler implements HandlerInterface
 	protected $context;
 
 	/** {@inheritdoc} */
-	public function handleError(ErrorException $error, Metadata $metadata)
+	public function handleError(ErrorException $error, Metadata $metadata = null)
 	{
 		$this->errorHandled = true;
 		$this->context = $error->getContext();
 	}
 
 	/** {@inheritdoc} */
-	public function handleException(\Exception $exception, Metadata $metadata)
+	public function handleException(\Exception $exception, Metadata $metadata = null)
 	{
 		$this->exceptionHandled = true;
 	}
