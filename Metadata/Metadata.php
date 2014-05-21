@@ -117,7 +117,9 @@ class Metadata
 	{
 		if (!is_string($category))
 		{
+			// @codeCoverageIgnoreStart
 			throw new \LogicException('Category must be of a type "string"');
+			// @codeCoverageIgnoreEnd
 		}
 		$this->categories[$category] = $category;
 
@@ -134,7 +136,9 @@ class Metadata
 	{
 		if (!is_string($category))
 		{
+			// @codeCoverageIgnoreStart
 			throw new \LogicException('Category must be of a type "string"');
+			// @codeCoverageIgnoreEnd
 		}
 		if (isset($this->categories[$category]))
 		{
