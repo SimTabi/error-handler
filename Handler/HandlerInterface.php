@@ -20,10 +20,9 @@ interface HandlerInterface
 	public function handleException(\Exception $exception, Metadata $metadata = null);
 
 	/**
-	 * @param string   $eventName
-	 * @param string   $message
+	 * @param string   $event
 	 * @param Metadata $metadata
 	 */
-	public function handleEvent($eventName, $message, Metadata $metadata = null);
+	public function handleEvent($event, Metadata $metadata = null);
 }
 
