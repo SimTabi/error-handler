@@ -32,13 +32,13 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	}
 
 	/** {@inheritdoc} */
-	public function handleEvent($eventName, $message, Metadata $metadata = null)
+	public function handleEvent($event, Metadata $metadata = null)
 	{
 		$metadataArr = array_merge($metadata->getMetadata(), $metadata->getTags());
 		$this->setReleaseStage($metadata->getStage());
 		$this->setProjectRoot($metadata->getAppRootDir());
 		$this->setAppVersion($metadata->getAppVersion());
-		$this->notifyError($eventName, $message, $metadataArr, ErrorException::translateSeverity(E_USER_NOTICE));
+		$this->notifyError('event', $event, $metadataArr, ErrorException::translateSeverity(E_USER_NOTICE));
 	}
 
 	/** {@inheritdoc} */

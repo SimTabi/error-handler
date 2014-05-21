@@ -57,7 +57,7 @@ class TestHandlerTest extends \PHPUnit_Framework_TestCase
 	public function testTestHandlerHandlesEvent()
 	{
 		$this->assertFalse($this->testHandler->getEventHandled());
-		$this->errorHandler->handleEvent('eventName', 'message');
+		$this->errorHandler->handleEvent('eventName');
 		$this->assertTrue($this->testHandler->getEventHandled());
 	}
 

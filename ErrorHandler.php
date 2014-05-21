@@ -292,13 +292,19 @@ class ErrorHandler
 		return $this;
 	}
 
-	public function handleEvent($eventName, $message, Metadata $metadata = null)
+	/**
+	 * @param string   $event
+	 * @param Metadata $metadata
+	 *
+	 * @return $this
+	 */
+	public function handleEvent($event, Metadata $metadata = null)
 	{
 		$metadata = $this->getMetadata($metadata, null);
 
 		foreach ($this->handlers as $handler)
 		{
-			$handler->handleEvent($eventName, $message, $metadata);
+			$handler->handleEvent($event, $metadata);
 		}
 
 		++$this->eventsHandled;

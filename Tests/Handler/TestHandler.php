@@ -34,7 +34,7 @@ class TestHandler implements HandlerInterface
 	}
 
 	/** {@inheritdoc} */
-	public function handleEvent($eventName, $message, Metadata $metadata = null)
+	public function handleEvent($event, Metadata $metadata = null)
 	{
 		$this->eventHandled = true;
 	}
