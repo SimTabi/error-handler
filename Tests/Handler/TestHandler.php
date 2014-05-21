@@ -14,6 +14,9 @@ class TestHandler implements HandlerInterface
 	/** @var bool */
 	protected $errorHandled = false;
 
+	/** @var bool */
+	protected $eventHandled = false;
+
 	/** @var array */
 	protected $context;
 
@@ -30,6 +33,12 @@ class TestHandler implements HandlerInterface
 		$this->exceptionHandled = true;
 	}
 
+	/** {@inheritdoc} */
+	public function handleEvent($eventName, $message, Metadata $metadata = null)
+	{
+		$this->eventHandled = true;
+	}
+
 	/**
 	 * @return boolean
 	 */
@@ -44,6 +53,14 @@ class TestHandler implements HandlerInterface
 	public function getExceptionHandled()
 	{
 		return $this->exceptionHandled;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getEventHandled()
+	{
+		return $this->eventHandled;
 	}
 
 	/**

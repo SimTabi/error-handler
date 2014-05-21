@@ -32,6 +32,16 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	}
 
 	/** {@inheritdoc} */
+	public function handleEvent($eventName, $message, Metadata $metadata = null)
+	{
+		$metadataArr = array_merge($metadata->getMetadata(), $metadata->getTags());
+		$this->setReleaseStage($metadata->getStage());
+		$this->setProjectRoot($metadata->getAppRootDir());
+		$this->setAppVersion($metadata->getAppVersion());
+		$this->notifyError($eventName, $message, $metadataArr, ErrorException::translateSeverity(E_USER_NOTICE));
+	}
+
+	/** {@inheritdoc} */
 	public function shutdownHandler()
 	{
 		// ErrorHandler handles on-shutdown errors already

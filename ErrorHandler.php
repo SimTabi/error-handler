@@ -24,6 +24,9 @@ class ErrorHandler
 	/** @var int */
 	protected $exceptionsHandled = 0;
 
+	/** @var int */
+	protected $eventsHandled = 0;
+
 	/** @var HandlerInterface[] */
 	protected $handlers = array();
 
@@ -257,7 +260,7 @@ class ErrorHandler
 	public function handleError($errNo, $errStr, $errFile, $errLine, $errContext = array(), Metadata $metadata = null)
 	{
 		$error    = ErrorException::fromPhpError($errNo, $errStr, $errFile, $errLine, $errContext);
-		$metadata = $this->getMetadata($error, $metadata);
+		$metadata = $this->getMetadata($metadata, $error);
 
 		foreach ($this->handlers as $handler)
 		{
@@ -277,7 +280,7 @@ class ErrorHandler
 	 */
 	public function handleException(\Exception $exception, Metadata $metadata = null)
 	{
-		$metadata = $this->getMetadata($exception, $metadata);
+		$metadata = $this->getMetadata($metadata, $exception);
 
 		foreach ($this->handlers as $handler)
 		{
@@ -285,6 +288,20 @@ class ErrorHandler
 		}
 
 		++$this->exceptionsHandled;
+
+		return $this;
+	}
+
+	public function handleEvent($eventName, $message, Metadata $metadata = null)
+	{
+		$metadata = $this->getMetadata($metadata, null);
+
+		foreach ($this->handlers as $handler)
+		{
+			$handler->handleEvent($eventName, $message, $metadata);
+		}
+
+		++$this->eventsHandled;
 
 		return $this;
 	}
@@ -342,12 +359,12 @@ class ErrorHandler
 	}
 
 	/**
-	 * @param \Exception $e
 	 * @param Metadata   $metadata
+	 * @param \Exception $e
 	 *
 	 * @return Metadata
 	 */
-	public function getMetadata(\Exception $e, Metadata $metadata = null)
+	public function getMetadata(Metadata $metadata = null, \Exception $e = null)
 	{
 		$metadata = isset($metadata) ? $metadata : new Metadata();
 

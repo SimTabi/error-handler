@@ -10,5 +10,5 @@ interface ProcessorInterface
 	 * @param Metadata   $metadata
 	 * @param \Exception $exception
 	 */
-	public function process(Metadata $metadata, \Exception $exception);
+	public function process(Metadata $metadata, \Exception $exception = null);
 }

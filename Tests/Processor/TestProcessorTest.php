@@ -28,7 +28,7 @@ class TestProcessorTest extends \PHPUnit_Framework_TestCase
 
 	public function testMetadataAltered()
 	{
-		$metadata = $this->errorHandler->getMetadata(new \Exception());
+		$metadata = $this->errorHandler->getMetadata(null, new \Exception());
 		$this->assertEquals('app_root_dir', $metadata->getAppRootDir());
 		$this->assertEquals('stage', $metadata->getStage());
 		$this->assertEquals('app_version', $metadata->getAppVersion());

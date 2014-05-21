@@ -11,7 +11,7 @@ class TestProcessor implements ProcessorInterface
 	protected $callbackExecuted = false;
 
 	/** {@inheritdoc} */
-	public function process(Metadata $metadata, \Exception $exception)
+	public function process(Metadata $metadata, \Exception $exception = null)
 	{
 		$this->callbackExecuted = true;
 		$metadata->setAppRootDir('app_root_dir');
