@@ -33,6 +33,12 @@ class TestProcessor implements ProcessorInterface
 		$metadata->setCategories(array('category1', 'category2'));
 		$metadata->addCategory('category3');
 		$metadata->removeCategory('category3');
+
+		$metadata->setGrouping([
+			'group1' => 'value1',
+		]);
+		$metadata->groupBy('group1', 'value2');
+		$metadata->groupBy('group2', 'value2');
 	}
 
 	/**

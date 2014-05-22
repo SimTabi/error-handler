@@ -54,7 +54,7 @@ class StatsCollector
 	}
 
 	/**
-	 * @param int $exceptionsHandled
+	 * @param int $count
 	 *
 	 * @return $this
 	 */

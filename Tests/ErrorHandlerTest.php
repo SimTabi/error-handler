@@ -2,7 +2,7 @@
 
 namespace prgTW\ErrorHandler\Tests;
 
-use prgTW\ErrorHandler\Error\ErrorException;
+use prgTW\ErrorHandler\Error\Severity;
 use prgTW\ErrorHandler\ErrorHandler;
 use prgTW\ErrorHandler\Utils\Utils;
 
@@ -73,7 +73,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @dataProvider getErrorTypes
+	 * @dataProvider provideErrorTypes
 	 */
 	public function testIsCatchable($type, $isCatchable)
 	{
@@ -81,7 +81,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($isCatchable, $ret);
 	}
 
-	public function getErrorTypes()
+	public function provideErrorTypes()
 	{
 		return array(
 			array(E_NOTICE, false),
@@ -99,6 +99,36 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 			array(E_RECOVERABLE_ERROR, true),
 			array(E_DEPRECATED, false),
 			array(E_USER_DEPRECATED, false),
+		);
+	}
+
+	/**
+	 * @dataProvider provideSeverityTranslations
+	 */
+	public function testSeverityTranslation($errorNo, $severity)
+	{
+		$this->assertEquals($severity, Severity::fromPhpErrorNo($errorNo));
+	}
+
+	public function provideSeverityTranslations()
+	{
+		return array(
+			array(0, Severity::ERROR), //default
+			array(E_NOTICE, Severity::NOTICE),
+			array(E_WARNING, Severity::WARNING),
+			array(E_ERROR, Severity::ERROR),
+			array(E_PARSE, Severity::ERROR),
+			array(E_CORE_ERROR, Severity::ERROR),
+			array(E_CORE_WARNING, Severity::WARNING),
+			array(E_COMPILE_ERROR, Severity::ERROR),
+			array(E_COMPILE_WARNING, Severity::WARNING),
+			array(E_USER_ERROR, Severity::ERROR),
+			array(E_USER_WARNING, Severity::WARNING),
+			array(E_USER_NOTICE, Severity::NOTICE),
+			array(E_STRICT, Severity::INFO),
+			array(E_RECOVERABLE_ERROR, Severity::ERROR),
+			array(E_DEPRECATED, Severity::WARNING),
+			array(E_USER_DEPRECATED, Severity::WARNING),
 		);
 	}
 

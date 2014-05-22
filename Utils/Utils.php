@@ -2,7 +2,7 @@
 
 namespace prgTW\ErrorHandler\Utils;
 
-use prgTW\ErrorHandler\Error\ErrorException;
+use prgTW\ErrorHandler\Error\Severity;
 
 class Utils
 {
@@ -13,8 +13,8 @@ class Utils
 	 */
 	public static function isCatchableOnShutdown(array $error)
 	{
-		$severity = ErrorException::translateSeverity($error['type']);
+		$severity = Severity::fromPhpErrorNo($error['type']);
 
-		return $severity >= ErrorException::ERROR;
+		return $severity >= Severity::ERROR;
 	}
 }

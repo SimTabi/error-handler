@@ -3,6 +3,7 @@
 namespace prgTW\ErrorHandler\Handler;
 
 use prgTW\ErrorHandler\Error\ErrorException;
+use prgTW\ErrorHandler\Error\Severity;
 use prgTW\ErrorHandler\Metadata\Metadata;
 
 /**
@@ -56,7 +57,7 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 		$this->setReleaseStage($metadata->getStage());
 		$this->setProjectRoot($metadata->getAppRootDir());
 		$this->setAppVersion($metadata->getAppVersion());
-		$this->notifyError('event', $event, $metadataArr, ErrorException::translateSeverity(E_USER_NOTICE));
+		$this->notifyError('event', $event, $metadataArr, Severity::fromPhpErrorNo(E_USER_NOTICE));
 	}
 
 	/** {@inheritdoc} */
