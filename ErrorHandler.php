@@ -2,10 +2,12 @@
 
 namespace prgTW\ErrorHandler;
 
+use prgTW\ErrorHandler\Collector\StatsCollector;
 use prgTW\ErrorHandler\Error\ErrorException;
-use prgTW\ErrorHandler\Handler\HandlerInterface;
+use prgTW\ErrorHandler\Handler\HandlerManager;
 use prgTW\ErrorHandler\Metadata\Metadata;
-use prgTW\ErrorHandler\Processor\ProcessorInterface;
+use prgTW\ErrorHandler\Processor\ProcessorManager;
+use prgTW\ErrorHandler\Utils\Utils;
 
 class ErrorHandler
 {
@@ -18,92 +20,44 @@ class ErrorHandler
 	/** @var bool */
 	protected $shutdownHandlerRegistered = false;
 
-	/** @var HandlerInterface[] */
-	protected $handlers = array();
+	/** @var HandlerManager */
+	protected $handlerManager;
 
-	/** @var array */
-	protected $handlerCategories = array();
+	/** @var ProcessorManager */
+	protected $processorManager;
 
-	/** @var ProcessorInterface[] */
-	protected $processors = array();
+	/** @var StatsCollector */
+	protected $stats;
 
-	/** @var \prgTW\ErrorHandler\StatsCollector */
-	protected $statsCollector;
-
-	/**
-	 * @param StatsCollector $collector
-	 */
-	public function __construct(StatsCollector $statsCollector = null)
+	public function __construct()
 	{
-		$this->statsCollector = $statsCollector;
+		$this->handlerManager   = new HandlerManager();
+		$this->processorManager = new ProcessorManager();
+		$this->stats            = new StatsCollector();
 	}
 
 	/**
-	 * @param HandlerInterface $handler
-	 * @param array            $categories
-	 *
-	 * @return $this
-	 * @throws \LogicException when category is not of type "string"
+	 * @return HandlerManager
 	 */
-	public function addHandler(HandlerInterface $handler, array $categories = array())
+	public function getHandlerManager()
 	{
-		$categories            = $this->getCategories($categories);
-		$hash                  = spl_object_hash($handler);
-		$this->handlers[$hash] = $handler;
-		if (isset($this->handlerCategories[$hash]))
-		{
-			$this->handlerCategories[$hash] = array_merge($this->handlerCategories[$hash], $categories);
-		}
-		else
-		{
-			$this->handlerCategories[$hash] = $this->getCategories($categories);
-		}
-
-		return $this;
+		return $this->handlerManager;
 	}
 
 	/**
-	 * @param array $categories
-	 *
-	 * @return HandlerInterface[]
-	 * @throws \LogicException when category is not of type "string"
+	 * @return ProcessorManager
 	 */
-	public function getHandlers(array $categories = array())
+	public function getProcessorManager()
 	{
-		$handlers   = $this->handlers;
-		$categories = $this->getCategories($categories);
-		if ($categories !== array())
-		{
-			foreach ($handlers as $hash => $handler)
-			{
-				if (!array_intersect($this->handlerCategories[$hash], $categories))
-				{
-					unset($handlers[$hash]);
-				}
-			}
-		}
-
-		return array_values($handlers);
+		return $this->processorManager;
 	}
 
 	/**
-	 * @param ProcessorInterface $processor
-	 *
-	 * @return $this
+	 * @return StatsCollector
 	 */
-	public function addProcessor(ProcessorInterface $processor)
+	public function getStats()
 	{
-		$this->processors[] = $processor;
-
-		return $this;
-	}
-
-	/**
-	 * @return ProcessorInterface[]
-	 */
-	public function getProcessors()
-	{
-		return $this->processors;
+		return $this->stats;
 	}
 
 	/**
@@ -261,17 +215,18 @@ class ErrorHandler
 	 */
 	public function handleError($errNo, $errStr, $errFile, $errLine, $errContext = array(), Metadata $metadata = null)
 	{
-		$error    = ErrorException::fromPhpError($errNo, $errStr, $errFile, $errLine, $errContext);
-		$metadata = $this->getMetadata($metadata, $error);
+		$error      = ErrorException::fromPhpError($errNo, $errStr, $errFile, $errLine, $errContext);
+		$metadata   = $this->getMetadata($metadata, $error);
+		$categories = $metadata->getCategories();
 
-		foreach ($this->handlers as $handler)
+		foreach ($this->handlerManager->all($categories) as $handler)
 		{
 			$handler->handleError($error, $metadata);
 		}
 
-		if ($this->statsCollector)
+		if ($this->stats)
 		{
-			$this->statsCollector->addError();
+			$this->stats->addError();
 		}
 
 		return $this;
@@ -285,16 +240,17 @@ class ErrorHandler
 	 */
 	public function handleException(\Exception $exception, Metadata $metadata = null)
 	{
-		$metadata = $this->getMetadata($metadata, $exception);
+		$metadata   = $this->getMetadata($metadata, $exception);
+		$categories = $metadata->getCategories();
 
-		foreach ($this->handlers as $handler)
+		foreach ($this->handlerManager->all($categories) as $handler)
 		{
 			$handler->handleException($exception, $metadata);
 		}
 
-		if ($this->statsCollector)
+		if ($this->stats)
 		{
-			$this->statsCollector->addException();
+			$this->stats->addException();
 		}
 
 		return $this;
@@ -308,16 +264,17 @@ class ErrorHandler
 	 */
 	public function handleEvent($event, Metadata $metadata = null)
 	{
-		$metadata = $this->getMetadata($metadata, null);
+		$metadata   = $this->getMetadata($metadata, null);
+		$categories = $metadata->getCategories();
 
-		foreach ($this->handlers as $handler)
+		foreach ($this->handlerManager->all($categories) as $handler)
 		{
 			$handler->handleEvent($event, $metadata);
 		}
 
-		if ($this->statsCollector)
+		if ($this->stats)
 		{
-			$this->statsCollector->addEvent();
+			$this->stats->addEvent();
 		}
 
 		return $this;
@@ -336,7 +293,7 @@ class ErrorHandler
 		}
 
 		$error = error_get_last();
-		if ($error && $this->isCatchableOnShutdown($error))
+		if ($error && Utils::isCatchableOnShutdown($error))
 		{
 			$this->handleError(
 				$error['type'],
@@ -357,7 +314,7 @@ class ErrorHandler
 	{
 		$metadata = isset($metadata) ? $metadata : new Metadata();
 
-		foreach ($this->processors as $processor)
+		foreach ($this->processorManager->all() as $processor)
 		{
 			$processor->process($metadata, $e);
 		}

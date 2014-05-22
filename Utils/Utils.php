@@ -2,6 +2,8 @@
 
 namespace prgTW\ErrorHandler\Utils;
 
+use prgTW\ErrorHandler\Error\ErrorException;
+
 class Utils
 {
 	/**

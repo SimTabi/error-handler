@@ -14,28 +14,22 @@ class TestHandlerTest extends \PHPUnit_Framework_TestCase
 
 	public function testGlobalHandlerConnected()
 	{
-		$handlers = $this->errorHandler->getHandlers();
+		$handlers = $this->errorHandler->getHandlerManager()->all();
 		$this->assertCount(1, $handlers);
 		$this->assertEquals($this->testHandler, $handlers[0]);
 	}
 
-	/**
-	 * @expectedException \Exception
-	 */
-	public function testInvalidCategorization()
-	{
-		$this->errorHandler->addHandler($this->testHandler, array(array('something')));
-	}
-
 	public function testCategorization()
 	{
-		$this->errorHandler->addHandler($this->testHandler, array('category1'));
-		$this->errorHandler->addHandler($this->testHandler, array('category1'));
-		$this->errorHandler->addHandler($this->testHandler, array('category2'));
-		$this->assertCount(1, $this->errorHandler->getHandlers());
-		$this->assertCount(1, $this->errorHandler->getHandlers(array('category1')));
-		$this->assertCount(1, $this->errorHandler->getHandlers(array('category2')));
-		$this->assertCount(0, $this->errorHandler->getHandlers(array('non-existent')));
+		$handlerManager = $this->errorHandler->getHandlerManager();
+
+		$handlerManager->attach($this->testHandler, array('category1'));
+		$handlerManager->attach($this->testHandler, array('category1'));
+		$handlerManager->attach($this->testHandler, array('category2'));
+		$this->assertCount(1, $handlerManager->all());
+		$this->assertCount(1, $handlerManager->all(array('category1')));
+		$this->assertCount(1, $handlerManager->all(array('category2')));
+		$this->assertCount(0, $handlerManager->all(array('non-existent')));
 	}
 
 	public function testTestHandlerHandlesError()
@@ -65,7 +59,7 @@ class TestHandlerTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->testHandler  = new TestHandler();
 		$this->errorHandler = new ErrorHandler();
-		$this->errorHandler->addHandler($this->testHandler);
+		$this->errorHandler->getHandlerManager()->attach($this->testHandler);
 	}
 
 	public function tearDown()

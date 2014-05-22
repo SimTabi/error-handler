@@ -4,6 +4,7 @@ namespace prgTW\ErrorHandler\Tests;
 
 use prgTW\ErrorHandler\Error\ErrorException;
 use prgTW\ErrorHandler\ErrorHandler;
+use prgTW\ErrorHandler\Utils\Utils;
 
 class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,20 +49,20 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
 	public function testErrorHandler()
 	{
-		$this->assertEquals(0, $this->errorHandler->getErrorsHandled());
+		$this->assertEquals(0, $this->errorHandler->getStats()->getErrorsHandled());
 		$this->errorHandler->register(true, false, false);
 		trigger_error('test', E_USER_ERROR);
 		$this->errorHandler->unregister();
-		$this->assertEquals(1, $this->errorHandler->getErrorsHandled());
+		$this->assertEquals(1, $this->errorHandler->getStats()->getErrorsHandled());
 	}
 
 	public function testExceptionHandler()
 	{
-		$this->assertEquals(0, $this->errorHandler->getExceptionsHandled());
+		$this->assertEquals(0, $this->errorHandler->getStats()->getExceptionsHandled());
 		$this->errorHandler->register(false, true, false);
 		$this->errorHandler->handleException(new \Exception('test'));
 		$this->errorHandler->unregister();
-		$this->assertEquals(1, $this->errorHandler->getExceptionsHandled());
+		$this->assertEquals(1, $this->errorHandler->getStats()->getExceptionsHandled());
 	}
 
 	/**
@@ -69,7 +70,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testIsCatchable($type, $isCatchable)
 	{
-		$ret = ErrorHandler::isCatchableOnShutdown(array('type' => $type));
+		$ret = Utils::isCatchableOnShutdown(array('type' => $type));
 		$this->assertEquals($isCatchable, $ret);
 	}
 

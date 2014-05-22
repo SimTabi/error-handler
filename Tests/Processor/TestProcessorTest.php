@@ -12,9 +12,9 @@ class TestProcessorTest extends \PHPUnit_Framework_TestCase
 	/** @var ErrorHandler */
 	protected $errorHandler;
 
-	public function testTestHandlerConnected()
+	public function testProcessorsConnected()
 	{
-		$processors = $this->errorHandler->getProcessors();
+		$processors = $this->errorHandler->getProcessorManager()->all();
 		$this->assertCount(1, $processors);
 		$this->assertEquals($this->testProcessor, $processors[0]);
 	}
@@ -47,7 +47,7 @@ class TestProcessorTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->testProcessor = new TestProcessor();
 		$this->errorHandler  = new ErrorHandler();
-		$this->errorHandler->addProcessor($this->testProcessor);
+		$this->errorHandler->getProcessorManager()->attach($this->testProcessor);
 	}
 
 	public function tearDown()
