@@ -34,9 +34,9 @@ class TestProcessor implements ProcessorInterface
 		$metadata->addCategory('category3');
 		$metadata->removeCategory('category3');
 
-		$metadata->setGrouping([
+		$metadata->setGrouping(array(
 			'group1' => 'value1',
-		]);
+		));
 		$metadata->groupBy('group1', 'value2');
 		$metadata->groupBy('group2', 'value2');
 	}
