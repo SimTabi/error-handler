@@ -17,24 +17,24 @@ class TestProcessor implements ProcessorInterface
 		$metadata->setAppRootDir('app_root_dir');
 		$metadata->setStage('stage');
 		$metadata->setAppVersion('app_version');
-		$metadata->setTags(array(
+		$metadata->addTags(array(
 			'tag1' => 1,
 			'tag3' => 3,
 		));
-		$metadata->setTag('tag2', 2);
+		$metadata->addTag('tag2', 2);
 		$metadata->removeTag('tag3');
-		$metadata->setMetadata(array(
+		$metadata->addMetadata(array(
 			'metadatum1' => 1,
 			'metadatum3' => 3,
 		));
-		$metadata->setMetadatum('metadatum2', 2);
+		$metadata->addMetadatum('metadatum2', 2);
 		$metadata->removeMetadatum('metadatum3');
 
-		$metadata->setCategories(array('category1', 'category2'));
+		$metadata->addCategories(array('category1', 'category2'));
 		$metadata->addCategory('category3');
 		$metadata->removeCategory('category3');
 
-		$metadata->setGrouping(array(
+		$metadata->addGrouping(array(
 			'group1' => 'value1',
 		));
 		$metadata->groupBy('group1', 'value2');

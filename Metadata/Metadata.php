@@ -91,12 +91,20 @@ class Metadata
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getCategories()
+	{
+		return array_values($this->categories);
+	}
+
+	/**
 	 * @param array $categories
 	 *
 	 * @throws \LogicException when category is not of type "string"
 	 * @return $this
 	 */
-	public function setCategories(array $categories)
+	public function addCategories(array $categories)
 	{
 		$this->categories = array();
 		foreach ($categories as $category)
@@ -105,14 +113,6 @@ class Metadata
 		}
 
 		return $this;
-	}
-
-	/**
-	 * @return null|string
-	 */
-	public function getCategories()
-	{
-		return array_values($this->categories);
 	}
 
 	/**
@@ -161,9 +161,12 @@ class Metadata
 	 *
 	 * @return $this
 	 */
-	public function setGrouping(array $grouping)
+	public function addGrouping(array $grouping)
 	{
-		$this->grouping = $grouping;
+		foreach ($grouping as $name => $value)
+		{
+			$this->groupBy($name, $value);
+		}
 
 		return $this;
 	}
@@ -197,9 +200,9 @@ class Metadata
 	 *
 	 * @return $this
 	 */
-	public function setTags(array $tags)
+	public function addTags(array $tags)
 	{
-		$this->tags = $tags;
+		$this->tags = array_merge_recursive($this->tags, $tags);
 
 		return $this;
 	}
@@ -218,7 +221,7 @@ class Metadata
 	 *
 	 * @return $this
 	 */
-	public function setTag($name, $value)
+	public function addTag($name, $value)
 	{
 		$this->tags[$name] = $value;
 
@@ -245,7 +248,7 @@ class Metadata
 	 *
 	 * @return $this
 	 */
-	public function setMetadata(array $metadata)
+	public function addMetadata(array $metadata)
 	{
 		$this->metadata = array_merge_recursive($this->metadata, $metadata);
 
@@ -266,7 +269,7 @@ class Metadata
 	 *
 	 * @return $this
 	 */
-	public function setMetadatum($name, $value)
+	public function addMetadatum($name, $value)
 	{
 		$this->metadata[$name] = $value;
 
