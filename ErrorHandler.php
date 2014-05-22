@@ -321,6 +321,22 @@ class ErrorHandler
 	{
 		$metadata = isset($metadata) ? $metadata : new Metadata();
 
+		if (!$metadata->getSeverity())
+		{
+			if ($e instanceof ErrorException)
+			{
+				$metadata->setSeverity($e->getSeverity());
+			}
+			elseif ($e instanceof \Exception)
+			{
+				$metadata->setSeverity(Severity::ERROR);
+			}
+			else
+			{
+				$metadata->setSeverity(Severity::NOTICE);
+			}
+		}
+
 		foreach ($this->processorManager->all() as $processor)
 		{
 			$processor->process($metadata, $e);

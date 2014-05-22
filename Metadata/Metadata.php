@@ -2,6 +2,8 @@
 
 namespace prgTW\ErrorHandler\Metadata;
 
+use prgTW\ErrorHandler\Error\Severity;
+
 class Metadata
 {
 	/** @var array */
@@ -24,6 +26,9 @@ class Metadata
 
 	/** @var array */
 	protected $metadata = array();
+
+	/** @var int */
+	protected $severity;
 
 	/**
 	 * @param string $stage
@@ -281,5 +286,37 @@ class Metadata
 		}
 
 		return $this;
+	}
+
+	/**
+	 * @param int $severity
+	 *
+	 * @see Severity::$SEVERITIES
+	 * @throws \LogicException when severity is not in a given array
+	 * @return $this
+	 */
+	public function setSeverity($severity)
+	{
+		if (!in_array($severity, Severity::$SEVERITIES))
+		{
+			// @codeCoverageIgnoreStart
+			$severities = array_map(function ($severity)
+			{
+				return sprintf('Severity::%s', $severity);
+			}, array_keys(Severity::$SEVERITIES));
+			throw new \LogicException(sprintf('Severity must be one of: %s', $severities));
+			// @codeCoverageIgnoreEnd
+		}
+		$this->severity = $severity;
+
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getSeverity()
+	{
+		return $this->severity;
 	}
 }

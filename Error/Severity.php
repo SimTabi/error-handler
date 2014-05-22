@@ -13,6 +13,18 @@ class Severity
 	const ALERT     = 550;
 	const EMERGENCY = 600;
 
+	/** @var array */
+	static $SEVERITIES = array(
+		'DEBUG'     => self::DEBUG,
+		'INFO'      => self::INFO,
+		'NOTICE'    => self::NOTICE,
+		'WARNING'   => self::WARNING,
+		'ERROR'     => self::ERROR,
+		'CRITICAL'  => self::CRITICAL,
+		'ALERT'     => self::ALERT,
+		'EMERGENCY' => self::EMERGENCY
+	);
+
 	/**
 	 * @param int $errorNo
 	 *
