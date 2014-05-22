@@ -4,7 +4,6 @@ namespace prgTW\ErrorHandler\Tests;
 
 use prgTW\ErrorHandler\Error\Severity;
 use prgTW\ErrorHandler\ErrorHandler;
-use prgTW\ErrorHandler\Utils\Utils;
 
 class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -70,36 +69,6 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(0, $this->errorHandler->getStats()->getEventsHandled());
 		$this->errorHandler->handleEvent('event');
 		$this->assertEquals(1, $this->errorHandler->getStats()->getEventsHandled());
-	}
-
-	/**
-	 * @dataProvider provideErrorTypes
-	 */
-	public function testIsCatchable($type, $isCatchable)
-	{
-		$ret = Utils::isCatchableOnShutdown(array('type' => $type));
-		$this->assertEquals($isCatchable, $ret);
-	}
-
-	public function provideErrorTypes()
-	{
-		return array(
-			array(E_NOTICE, false),
-			array(E_WARNING, false),
-			array(E_ERROR, true),
-			array(E_PARSE, true),
-			array(E_CORE_ERROR, true),
-			array(E_CORE_WARNING, false),
-			array(E_COMPILE_ERROR, true),
-			array(E_COMPILE_WARNING, false),
-			array(E_USER_ERROR, true),
-			array(E_USER_WARNING, false),
-			array(E_USER_NOTICE, false),
-			array(E_STRICT, false),
-			array(E_RECOVERABLE_ERROR, true),
-			array(E_DEPRECATED, false),
-			array(E_USER_DEPRECATED, false),
-		);
 	}
 
 	/**

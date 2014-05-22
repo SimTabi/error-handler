@@ -4,10 +4,10 @@ namespace prgTW\ErrorHandler;
 
 use prgTW\ErrorHandler\Collector\StatsCollector;
 use prgTW\ErrorHandler\Error\ErrorException;
+use prgTW\ErrorHandler\Error\Severity;
 use prgTW\ErrorHandler\Handler\HandlerManager;
 use prgTW\ErrorHandler\Metadata\Metadata;
 use prgTW\ErrorHandler\Processor\ProcessorManager;
-use prgTW\ErrorHandler\Utils\Utils;
 
 class ErrorHandler
 {
@@ -29,11 +29,18 @@ class ErrorHandler
 	/** @var StatsCollector */
 	protected $stats;
 
-	public function __construct()
+	/** @var int */
+	protected $minSeverityOnShutdown;
+
+	/**
+	 * @param int $minSeverityOnShutdown Minimum severity of on-shutdown-captured errors to be handled
+	 */
+	public function __construct($minSeverityOnShutdown = Severity::ERROR)
 	{
-		$this->handlerManager   = new HandlerManager();
-		$this->processorManager = new ProcessorManager();
-		$this->stats            = new StatsCollector();
+		$this->minSeverityOnShutdown = $minSeverityOnShutdown;
+		$this->handlerManager        = new HandlerManager();
+		$this->processorManager      = new ProcessorManager();
+		$this->stats                 = new StatsCollector();
 	}
 
 	/**
@@ -293,7 +300,7 @@ class ErrorHandler
 		}
 
 		$error = error_get_last();
-		if ($error && Utils::isCatchableOnShutdown($error))
+		if ($error && Severity::fromPhpErrorNo($error['type']) >= $this->minSeverityOnShutdown)
 		{
 			$this->handleError(
 				$error['type'],
