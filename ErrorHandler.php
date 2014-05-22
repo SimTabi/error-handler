@@ -18,15 +18,6 @@ class ErrorHandler
 	/** @var bool */
 	protected $shutdownHandlerRegistered = false;
 
-	/** @var int */
-	protected $errorsHandled = 0;
-
-	/** @var int */
-	protected $exceptionsHandled = 0;
-
-	/** @var int */
-	protected $eventsHandled = 0;
-
 	/** @var HandlerInterface[] */
 	protected $handlers = array();
 
@@ -35,6 +26,17 @@ class ErrorHandler
 
 	/** @var ProcessorInterface[] */
 	protected $processors = array();
+
+	/** @var \prgTW\ErrorHandler\StatsCollector */
+	protected $statsCollector;
+
+	/**
+	 * @param StatsCollector $collector
+	 */
+	public function __construct(StatsCollector $statsCollector = null)
+	{
+		$this->statsCollector = $statsCollector;
+	}
 
 	/**
 	 * @param HandlerInterface $handler
@@ -267,7 +269,10 @@ class ErrorHandler
 			$handler->handleError($error, $metadata);
 		}
 
-		++$this->errorsHandled;
+		if ($this->statsCollector)
+		{
+			$this->statsCollector->addError();
+		}
 
 		return $this;
 	}
@@ -287,7 +292,10 @@ class ErrorHandler
 			$handler->handleException($exception, $metadata);
 		}
 
-		++$this->exceptionsHandled;
+		if ($this->statsCollector)
+		{
+			$this->statsCollector->addException();
+		}
 
 		return $this;
 	}
@@ -307,7 +315,10 @@ class ErrorHandler
 			$handler->handleEvent($event, $metadata);
 		}
 
-		++$this->eventsHandled;
+		if ($this->statsCollector)
+		{
+			$this->statsCollector->addEvent();
+		}
 
 		return $this;
 	}
@@ -337,34 +348,6 @@ class ErrorHandler
 	}
 
 	/**
-	 * @param array $error
-	 *
-	 * @return bool
-	 */
-	public static function isCatchableOnShutdown(array $error)
-	{
-		$severity = ErrorException::translateSeverity($error['type']);
-
-		return $severity >= ErrorException::ERROR;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getErrorsHandled()
-	{
-		return $this->errorsHandled;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getExceptionsHandled()
-	{
-		return $this->exceptionsHandled;
-	}
-
-	/**
 	 * @param Metadata   $metadata
 	 * @param \Exception $e
 	 *
@@ -380,24 +363,5 @@ class ErrorHandler
 		}
 
 		return $metadata;
-	}
-
-	/**
-	 * @param array $categories
-	 *
-	 * @return array
-	 * @throws \LogicException when category is not of type "string"
-	 */
-	private function getCategories(array $categories = array())
-	{
-		array_walk($categories, function ($category)
-		{
-			if (!is_string($category))
-			{
-				throw new \LogicException('Category must be of a type "string"');
-			}
-		});
-
-		return array_values($categories);
 	}
 }
