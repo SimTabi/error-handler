@@ -168,7 +168,10 @@ class Metadata
 	 */
 	public function getGrouping()
 	{
-		return $this->grouping;
+		$grouping = $this->grouping;
+		ksort($grouping);
+
+		return $grouping;
 	}
 
 	/**
