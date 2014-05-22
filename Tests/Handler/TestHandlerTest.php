@@ -12,11 +12,19 @@ class TestHandlerTest extends \PHPUnit_Framework_TestCase
 	/** @var ErrorHandler */
 	protected $errorHandler;
 
-	public function testGlobalHandlerConnected()
+	public function testGlobalHandlerAttached()
 	{
 		$handlers = $this->errorHandler->getHandlerManager()->all();
 		$this->assertCount(1, $handlers);
 		$this->assertEquals($this->testHandler, $handlers[0]);
+	}
+
+	public function testGlobalHandlerDetached()
+	{
+		$handlers = $this->errorHandler->getHandlerManager()->all();
+		$this->assertCount(1, $handlers);
+		$this->errorHandler->getHandlerManager()->detach($this->testHandler);
+		$this->assertCount(0, $handlers);
 	}
 
 	public function testCategorization()

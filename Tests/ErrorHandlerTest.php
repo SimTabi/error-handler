@@ -65,6 +65,13 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(1, $this->errorHandler->getStats()->getExceptionsHandled());
 	}
 
+	public function testEventHandler()
+	{
+		$this->assertEquals(0, $this->errorHandler->getStats()->getEventsHandled());
+		$this->errorHandler->handleEvent('event');
+		$this->assertEquals(1, $this->errorHandler->getStats()->getEventsHandled());
+	}
+
 	/**
 	 * @dataProvider getErrorTypes
 	 */

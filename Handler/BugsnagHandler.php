@@ -14,6 +14,12 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	public function handleError(ErrorException $error, Metadata $metadata = null)
 	{
 		$metadataArr = array_merge($metadata->getMetadata(), $metadata->getTags());
+		$groupingHash = $this->calculateGroupingHash($metadata);
+		if ($groupingHash)
+		{
+			$metadataArr['grouping_hash'] = $groupingHash;
+		}
+
 		$this->setReleaseStage($metadata->getStage());
 		$this->setProjectRoot($metadata->getAppRootDir());
 		$this->setAppVersion($metadata->getAppVersion());
@@ -25,6 +31,12 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	public function handleException(\Exception $exception, Metadata $metadata = null)
 	{
 		$metadataArr = array_merge($metadata->getMetadata(), $metadata->getTags());
+		$groupingHash = $this->calculateGroupingHash($metadata);
+		if ($groupingHash)
+		{
+			$metadataArr['grouping_hash'] = $groupingHash;
+		}
+
 		$this->setReleaseStage($metadata->getStage());
 		$this->setProjectRoot($metadata->getAppRootDir());
 		$this->setAppVersion($metadata->getAppVersion());
@@ -35,6 +47,12 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	public function handleEvent($event, Metadata $metadata = null)
 	{
 		$metadataArr = array_merge($metadata->getMetadata(), $metadata->getTags());
+		$groupingHash = $this->calculateGroupingHash($metadata);
+		if ($groupingHash)
+		{
+			$metadataArr['grouping_hash'] = $groupingHash;
+		}
+
 		$this->setReleaseStage($metadata->getStage());
 		$this->setProjectRoot($metadata->getAppRootDir());
 		$this->setAppVersion($metadata->getAppVersion());
@@ -45,6 +63,29 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	public function shutdownHandler()
 	{
 		// ErrorHandler handles on-shutdown errors already
+	}
+
+	/**
+	 * @param Metadata $metadata
+	 *
+	 * @return string
+	 */
+	private function calculateGroupingHash(Metadata $metadata)
+	{
+		$grouping = $metadata->getGrouping();
+		if (!$grouping)
+		{
+			return '';
+		}
+
+		$dataToHash = '';
+
+		foreach ($grouping as $name => $value)
+		{
+			$dataToHash .= sprintf('%s=%s', $name, serialize($value));
+		}
+
+		return md5($dataToHash);
 	}
 
 }

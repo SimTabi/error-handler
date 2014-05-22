@@ -12,11 +12,19 @@ class TestProcessorTest extends \PHPUnit_Framework_TestCase
 	/** @var ErrorHandler */
 	protected $errorHandler;
 
-	public function testProcessorsConnected()
+	public function testProcessorsAttached()
 	{
 		$processors = $this->errorHandler->getProcessorManager()->all();
 		$this->assertCount(1, $processors);
 		$this->assertEquals($this->testProcessor, $processors[0]);
+	}
+
+	public function testProcessorsDetached()
+	{
+		$processors = $this->errorHandler->getProcessorManager()->all();
+		$this->assertCount(1, $processors);
+		$this->errorHandler->getProcessorManager()->detach($this->testProcessor);
+		$this->assertCount(0, $processors);
 	}
 
 	public function testCallbackExecuted()

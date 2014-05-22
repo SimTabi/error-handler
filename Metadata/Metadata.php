@@ -7,6 +7,9 @@ class Metadata
 	/** @var array */
 	protected $categories = array();
 
+	/** @var array */
+	protected $grouping = array();
+
 	/** @var string */
 	protected $appRootDir = '';
 
@@ -144,6 +147,39 @@ class Metadata
 		{
 			unset($this->categories[$category]);
 		}
+
+		return $this;
+	}
+
+	/**
+	 * @param array $grouping
+	 *
+	 * @return $this
+	 */
+	public function setGrouping(array $grouping)
+	{
+		$this->grouping = $grouping;
+
+		return $this;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getGrouping()
+	{
+		return $this->grouping;
+	}
+
+	/**
+	 * @param string $name
+	 * @param string $value
+	 *
+	 * @return $this
+	 */
+	public function groupBy($name, $value)
+	{
+		$this->grouping[$name] = $value;
 
 		return $this;
 	}

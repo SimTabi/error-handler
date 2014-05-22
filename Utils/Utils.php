@@ -7,25 +7,6 @@ use prgTW\ErrorHandler\Error\ErrorException;
 class Utils
 {
 	/**
-	 * @param array $categories
-	 *
-	 * @return array
-	 * @throws \LogicException when category is not of type "string"
-	 */
-	public static function getCategories(array $categories = array())
-	{
-		array_walk($categories, function ($category)
-		{
-			if (!is_string($category))
-			{
-				throw new \LogicException('Category must be of a type "string"');
-			}
-		});
-
-		return array_values($categories);
-	}
-
-	/**
 	 * @param array $error
 	 *
 	 * @return bool
