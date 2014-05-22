@@ -242,7 +242,7 @@ class Metadata
 	 */
 	public function setMetadata(array $metadata)
 	{
-		$this->metadata = $metadata;
+		$this->metadata = array_merge_recursive($this->metadata, $metadata);
 
 		return $this;
 	}
