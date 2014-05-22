@@ -21,10 +21,10 @@ class TestProcessorTest extends \PHPUnit_Framework_TestCase
 
 	public function testProcessorsDetached()
 	{
-		$processors = $this->errorHandler->getProcessorManager()->all();
-		$this->assertCount(1, $processors);
+		$processorManager = $this->errorHandler->getProcessorManager();
+		$this->assertCount(1, $processorManager->all());
 		$this->errorHandler->getProcessorManager()->detach($this->testProcessor);
-		$this->assertCount(0, $processors);
+		$this->assertCount(0, $processorManager->all());
 	}
 
 	public function testCallbackExecuted()
