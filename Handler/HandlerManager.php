@@ -16,7 +16,7 @@ class HandlerManager
 	 * @param HandlerInterface $handler
 	 * @param array            $categories
 	 */
-	public function attach(HandlerInterface $handler, array $categories = null)
+	public function attach(HandlerInterface $handler, array $categories = array())
 	{
 		if ($this->handlers->contains($handler))
 		{
@@ -49,7 +49,7 @@ class HandlerManager
 		foreach ($this->handlers as $handler)
 		{
 			$handlerCategories = $this->handlers->getInfo();
-			if (array() === $categories || array_intersect($categories, $handlerCategories))
+			if (array() === $categories || array() !== array_intersect($handlerCategories, $categories))
 			{
 				$handlers[] = $handler;
 			}
