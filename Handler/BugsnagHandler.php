@@ -77,12 +77,6 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 		$this->notifyError('event', $event, $metadataArr, self::$SEVERITY_MAP[$metadata->getSeverity()]);
 	}
 
-	/** {@inheritdoc} */
-	public function shutdownHandler()
-	{
-		// ErrorHandler handles on-shutdown errors already
-	}
-
 	/**
 	 * @param Metadata $metadata
 	 *
