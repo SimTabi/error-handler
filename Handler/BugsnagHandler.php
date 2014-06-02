@@ -43,6 +43,8 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 			$metadataArr,
 			self::$SEVERITY_MAP[$metadata->getSeverity()]
 		);
+
+		return $groupingHash;
 	}
 
 	/** {@inheritdoc} */
@@ -59,6 +61,8 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 		$this->setProjectRoot($metadata->getAppRootDir());
 		$this->setAppVersion($metadata->getAppVersion());
 		$this->notifyException($exception, $metadataArr, self::$SEVERITY_MAP[$metadata->getSeverity()]);
+
+		return $groupingHash;
 	}
 
 	/** {@inheritdoc} */
@@ -75,6 +79,8 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 		$this->setProjectRoot($metadata->getAppRootDir());
 		$this->setAppVersion($metadata->getAppVersion());
 		$this->notifyError('event', $event, $metadataArr, self::$SEVERITY_MAP[$metadata->getSeverity()]);
+
+		return $groupingHash;
 	}
 
 	/**
@@ -82,7 +88,7 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	 *
 	 * @return string
 	 */
-	private function calculateGroupingHash(Metadata $metadata)
+	protected function calculateGroupingHash(Metadata $metadata)
 	{
 		$grouping = $metadata->getGrouping();
 		if (!$grouping)
