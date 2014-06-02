@@ -24,7 +24,7 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	);
 
 	/** {@inheritdoc} */
-	public function handleError(ErrorException $error, Metadata $metadata = null)
+	public function handleError(ErrorException $error, Metadata $metadata)
 	{
 		$metadataArr  = array_merge($metadata->getMetadata(), $metadata->getTags());
 		$groupingHash = $this->calculateGroupingHash($metadata);
@@ -48,7 +48,7 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	}
 
 	/** {@inheritdoc} */
-	public function handleException(\Exception $exception, Metadata $metadata = null)
+	public function handleException(\Exception $exception, Metadata $metadata)
 	{
 		$metadataArr  = array_merge($metadata->getMetadata(), $metadata->getTags());
 		$groupingHash = $this->calculateGroupingHash($metadata);
@@ -66,7 +66,7 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	}
 
 	/** {@inheritdoc} */
-	public function handleEvent($event, Metadata $metadata = null)
+	public function handleEvent($event, Metadata $metadata)
 	{
 		$metadataArr  = array_merge($metadata->getMetadata(), $metadata->getTags());
 		$groupingHash = $this->calculateGroupingHash($metadata);

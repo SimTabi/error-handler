@@ -13,7 +13,7 @@ interface HandlerInterface
 	 *
 	 * @return null|string event ID
 	 */
-	public function handleError(ErrorException $error, Metadata $metadata = null);
+	public function handleError(ErrorException $error, Metadata $metadata);
 
 	/**
 	 * @param \Exception $exception
@@ -21,7 +21,7 @@ interface HandlerInterface
 	 *
 	 * @return null|string event ID
 	 */
-	public function handleException(\Exception $exception, Metadata $metadata = null);
+	public function handleException(\Exception $exception, Metadata $metadata);
 
 	/**
 	 * @param string   $event
@@ -29,6 +29,6 @@ interface HandlerInterface
 	 *
 	 * @return null|string event ID
 	 */
-	public function handleEvent($event, Metadata $metadata = null);
+	public function handleEvent($event, Metadata $metadata);
 }
 
