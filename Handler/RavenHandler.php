@@ -24,11 +24,11 @@ class RavenHandler extends \Raven_Client implements HandlerInterface
 	);
 
 	/** {@inheritdoc} */
-	public function __construct($options_or_dsn = null, $options = array())
+	public function __construct($optionsOrDsn = null, $options = array())
 	{
 		$options['auto_log_stacks'] = true;
 
-		parent::__construct($options_or_dsn, $options);
+		parent::__construct($optionsOrDsn, $options);
 	}
 
 	/** {@inheritdoc} */
