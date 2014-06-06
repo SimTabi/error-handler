@@ -68,6 +68,14 @@ class ErrorHandler
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getMinSeverityOnShutdown()
+	{
+		return $this->minSeverityOnShutdown;
+	}
+
+	/**
 	 * @param bool $errorHandler     Whether to catch errors
 	 * @param bool $exceptionHandler Whether to catch exceptions
 	 * @param bool $shutdownHandler  Whether to register shutdown handler
