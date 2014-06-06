@@ -313,21 +313,21 @@ class ErrorHandler
 
 	/**
 	 * @param Metadata   $metadata
-	 * @param \Exception $e
+	 * @param \Exception $exception
 	 *
 	 * @return Metadata
 	 */
-	public function getMetadata(Metadata $metadata = null, \Exception $e = null)
+	public function getMetadata(Metadata $metadata = null, \Exception $exception = null)
 	{
 		$metadata = isset($metadata) ? $metadata : new Metadata();
 
 		if (!$metadata->getSeverity())
 		{
-			if ($e instanceof ErrorException)
+			if ($exception instanceof ErrorException)
 			{
-				$metadata->setSeverity($e->getSeverity());
+				$metadata->setSeverity($exception->getSeverity());
 			}
-			elseif ($e instanceof \Exception)
+			elseif ($exception instanceof \Exception)
 			{
 				$metadata->setSeverity(Severity::ERROR);
 			}
@@ -339,7 +339,7 @@ class ErrorHandler
 
 		foreach ($this->processorManager->all() as $processor)
 		{
-			$processor->process($metadata, $e);
+			$processor->process($metadata, $exception);
 		}
 
 		return $metadata;
