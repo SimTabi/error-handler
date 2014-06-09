@@ -53,7 +53,7 @@ class ErrorException extends \ErrorException
 	 */
 	public static function fromPhpError($errNo, $errStr, $errFile, $errLine, $errContext = array())
 	{
-		$message = sprintf('[%s] %s in %s:%d', self::$phpErrors[$errNo], $errStr, $errFile, $errLine);
+		$message = sprintf('%s in %s:%d', self::$phpErrors[$errNo], $errStr, $errFile, $errLine);
 
 		$exception = new ErrorException($message, $errNo, $errFile, $errLine, $errContext);
 
