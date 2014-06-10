@@ -1,9 +1,0 @@
-before_commands:
-    - composer install --prefer-source --no-interaction
-
-tools:
-    external_code_coverage: true
-    php_code_sniffer: true
-    php_analyzer: true
-    php_cpd: true
-    php_pdepend: true
