@@ -14,7 +14,7 @@ class Severity
 	const EMERGENCY = 600;
 
 	/** @var array */
-	static $SEVERITIES = array(
+	public static $SEVERITIES = array(
 		'DEBUG'     => self::DEBUG,
 		'INFO'      => self::INFO,
 		'NOTICE'    => self::NOTICE,
