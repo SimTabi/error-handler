@@ -3,7 +3,6 @@ error-handler
 
 [![Build Status](https://travis-ci.org/prgTW/error-handler.svg?branch=master)](https://travis-ci.org/prgTW/error-handler)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/prgTW/error-handler/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/prgTW/error-handler/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/prgTW/error-handler/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/prgTW/error-handler/?branch=master)
 [![Coverage Status](https://coveralls.io/repos/prgTW/error-handler/badge.png)](https://coveralls.io/r/prgTW/error-handler)
 [![Dependency Status](https://www.versioneye.com/user/projects/537b58ff14c1580fc0000050/badge.svg)](https://www.versioneye.com/user/projects/537b58ff14c1580fc0000050)
 
