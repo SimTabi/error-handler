@@ -26,10 +26,8 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	/** {@inheritdoc} */
 	public function handleError(ErrorException $error, Metadata $metadata)
 	{
-		$metadataArr  = array_merge($metadata->getMetadata(), $metadata->getTags());
-		$groupingHash = $this->calculateGroupingHash($metadata);
+		$metadataArr = $this->prepareForSending($metadata);
 
-		$this->presetFromMetadata($metadata);
 		$this->setContext($error->getContext());
 		$this->notifyError(
 			ErrorException::$phpErrors[$error->getCode()],
@@ -38,31 +36,27 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 			self::$SEVERITY_MAP[$metadata->getSeverity()]
 		);
 
-		return $groupingHash;
+		return $metadataArr['grouping_hash'];
 	}
 
 	/** {@inheritdoc} */
 	public function handleException(\Exception $exception, Metadata $metadata)
 	{
-		$metadataArr  = array_merge($metadata->getMetadata(), $metadata->getTags());
-		$groupingHash = $this->calculateGroupingHash($metadata);
+		$metadataArr = $this->prepareForSending($metadata);
 
-		$this->presetFromMetadata($metadata);
 		$this->notifyException($exception, $metadataArr, self::$SEVERITY_MAP[$metadata->getSeverity()]);
 
-		return $groupingHash;
+		return $metadataArr['grouping_hash'];
 	}
 
 	/** {@inheritdoc} */
 	public function handleEvent($event, Metadata $metadata)
 	{
-		$metadataArr  = array_merge($metadata->getMetadata(), $metadata->getTags());
-		$groupingHash = $this->calculateGroupingHash($metadata);
+		$metadataArr = $this->prepareForSending($metadata);
 
-		$this->presetFromMetadata($metadata);
 		$this->notifyError('event', $event, $metadataArr, self::$SEVERITY_MAP[$metadata->getSeverity()]);
 
-		return $groupingHash;
+		return $metadataArr['grouping_hash'];
 	}
 
 	/**
@@ -85,20 +79,27 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 			$dataToHash .= sprintf('%s=%s', $name, serialize($value));
 		}
 
-		$groupingHash                 = md5($dataToHash);
-		$metadataArr['grouping_hash'] = $groupingHash;
+		$groupingHash = md5($dataToHash);
+		$metadata->addMetadatum('grouping_hash', $groupingHash);
 
 		return $groupingHash;
 	}
 
 	/**
 	 * @param Metadata $metadata
+	 *
+	 * @return array
 	 */
-	protected function presetFromMetadata(Metadata $metadata)
+	protected function prepareForSending(Metadata $metadata)
 	{
+		$this->calculateGroupingHash($metadata);
+		$metadataArr = array_merge($metadata->getTags(), $metadata->getMetadata());
+
 		$this->setReleaseStage($metadata->getStage());
 		$this->setProjectRoot($metadata->getAppRootDir());
 		$this->setAppVersion($metadata->getAppVersion());
+
+		return $metadataArr;
 	}
 
 }
