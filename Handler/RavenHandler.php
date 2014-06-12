@@ -12,7 +12,7 @@ use prgTW\ErrorHandler\Metadata\Metadata;
 class RavenHandler extends \Raven_Client implements HandlerInterface
 {
 	/** @var array */
-	static $SEVERITY_MAP = array(
+	public static $SEVERITY_MAP = array(
 		Severity::DEBUG     => \Raven_Client::DEBUG,
 		Severity::INFO      => \Raven_Client::INFO,
 		Severity::NOTICE    => \Raven_Client::INFO,

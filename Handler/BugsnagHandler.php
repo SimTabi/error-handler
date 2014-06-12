@@ -12,7 +12,7 @@ use prgTW\ErrorHandler\Metadata\Metadata;
 class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 {
 	/** @var array */
-	static $SEVERITY_MAP = array(
+	public static $SEVERITY_MAP = array(
 		Severity::DEBUG     => 'info',
 		Severity::INFO      => 'info',
 		Severity::NOTICE    => 'info',
@@ -28,14 +28,8 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	{
 		$metadataArr  = array_merge($metadata->getMetadata(), $metadata->getTags());
 		$groupingHash = $this->calculateGroupingHash($metadata);
-		if ($groupingHash)
-		{
-			$metadataArr['grouping_hash'] = $groupingHash;
-		}
 
-		$this->setReleaseStage($metadata->getStage());
-		$this->setProjectRoot($metadata->getAppRootDir());
-		$this->setAppVersion($metadata->getAppVersion());
+		$this->presetFromMetadata($metadata);
 		$this->setContext($error->getContext());
 		$this->notifyError(
 			ErrorException::$phpErrors[$error->getCode()],
@@ -52,14 +46,8 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	{
 		$metadataArr  = array_merge($metadata->getMetadata(), $metadata->getTags());
 		$groupingHash = $this->calculateGroupingHash($metadata);
-		if ($groupingHash)
-		{
-			$metadataArr['grouping_hash'] = $groupingHash;
-		}
 
-		$this->setReleaseStage($metadata->getStage());
-		$this->setProjectRoot($metadata->getAppRootDir());
-		$this->setAppVersion($metadata->getAppVersion());
+		$this->presetFromMetadata($metadata);
 		$this->notifyException($exception, $metadataArr, self::$SEVERITY_MAP[$metadata->getSeverity()]);
 
 		return $groupingHash;
@@ -70,14 +58,8 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 	{
 		$metadataArr  = array_merge($metadata->getMetadata(), $metadata->getTags());
 		$groupingHash = $this->calculateGroupingHash($metadata);
-		if ($groupingHash)
-		{
-			$metadataArr['grouping_hash'] = $groupingHash;
-		}
 
-		$this->setReleaseStage($metadata->getStage());
-		$this->setProjectRoot($metadata->getAppRootDir());
-		$this->setAppVersion($metadata->getAppVersion());
+		$this->presetFromMetadata($metadata);
 		$this->notifyError('event', $event, $metadataArr, self::$SEVERITY_MAP[$metadata->getSeverity()]);
 
 		return $groupingHash;
@@ -103,7 +85,20 @@ class BugsnagHandler extends \Bugsnag_Client implements HandlerInterface
 			$dataToHash .= sprintf('%s=%s', $name, serialize($value));
 		}
 
-		return md5($dataToHash);
+		$groupingHash                 = md5($dataToHash);
+		$metadataArr['grouping_hash'] = $groupingHash;
+
+		return $groupingHash;
+	}
+
+	/**
+	 * @param Metadata $metadata
+	 */
+	protected function presetFromMetadata(Metadata $metadata)
+	{
+		$this->setReleaseStage($metadata->getStage());
+		$this->setProjectRoot($metadata->getAppRootDir());
+		$this->setAppVersion($metadata->getAppVersion());
 	}
 
 }

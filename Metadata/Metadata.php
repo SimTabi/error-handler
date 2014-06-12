@@ -27,8 +27,8 @@ class Metadata
 	/** @var array */
 	protected $metadata = array();
 
-	/** @var int */
-	protected $severity;
+	/** @var int|null */
+	protected $severity = null;
 
 	/**
 	 * @param string $stage
@@ -83,7 +83,7 @@ class Metadata
 	}
 
 	/**
-	 * @return null|string
+	 * @return string
 	 */
 	public function getAppRootDir()
 	{
@@ -316,7 +316,7 @@ class Metadata
 	}
 
 	/**
-	 * @return int
+	 * @return int|null
 	 */
 	public function getSeverity()
 	{
