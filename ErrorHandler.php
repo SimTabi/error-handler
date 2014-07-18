@@ -230,7 +230,7 @@ class ErrorHandler
 	 */
 	public function handleError($errNo, $errStr, $errFile, $errLine, $errContext = array(), Metadata $metadata = null)
 	{
-		$error      = ErrorException::fromPhpError($errNo, $errStr, $errFile, $errLine, $errContext);
+		$error      = new ErrorException($errStr, $errNo, $errFile, $errLine, $errContext);
 		$metadata   = $this->getMetadata($metadata, $error);
 		$categories = $metadata->getCategories();
 

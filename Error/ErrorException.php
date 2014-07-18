@@ -27,6 +27,7 @@ class ErrorException extends \ErrorException
 	/** @var array */
 	protected $context;
 
+	/** {@inheritdoc} */
 	public function __construct($message = '', $code = 0, $filename = __FILE__, $lineNo = __LINE__, array $context = array())
 	{
 		$severity = Severity::fromPhpErrorNo($code);
@@ -40,23 +41,5 @@ class ErrorException extends \ErrorException
 	public function getContext()
 	{
 		return $this->context;
-	}
-
-	/**
-	 * @param int    $errNo
-	 * @param string $errStr
-	 * @param string $errFile
-	 * @param int    $errLine
-	 * @param array  $errContext
-	 *
-	 * @return ErrorException
-	 */
-	public static function fromPhpError($errNo, $errStr, $errFile, $errLine, $errContext = array())
-	{
-		$message = sprintf('%s in %s:%d', self::$phpErrors[$errNo], $errStr, $errFile, $errLine);
-
-		$exception = new ErrorException($message, $errNo, $errFile, $errLine, $errContext);
-
-		return $exception;
 	}
 }
