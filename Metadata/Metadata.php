@@ -6,6 +6,18 @@ use prgTW\ErrorHandler\Error\Severity;
 
 class Metadata
 {
+	const ACTION_PROCESS = 'process';
+	const ACTION_SKIP    = 'skip';
+
+	/** @var array */
+	protected static $validActions = [
+		self::ACTION_PROCESS,
+		self::ACTION_SKIP,
+	];
+
+	/** @var string */
+	protected $action = self::ACTION_PROCESS;
+
 	/** @var array */
 	protected $categories = array();
 
@@ -29,6 +41,34 @@ class Metadata
 
 	/** @var int|null */
 	protected $severity = null;
+
+	/**
+	 * @param string $action
+	 *
+	 * @return $this
+	 * @throws \LogicException on invalid action
+	 * @see Metadata::ACTION_*
+	 */
+	public function setAction($action)
+	{
+		if (!in_array($action, self::$validActions))
+		{
+			// @codeCoverageIgnoreStart
+			throw new \LogicException('Action has to be one of the following: %s', implode(', ', self::$validActions));
+			// @codeCoverageIgnoreEnd
+		}
+		$this->action = $action;
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAction()
+	{
+		return $this->action;
+	}
 
 	/**
 	 * @param string $stage

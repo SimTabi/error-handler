@@ -235,8 +235,14 @@ class ErrorHandler
 			return $this;
 		}
 
-		$error      = new ErrorException($errStr, $errNo, $errFile, $errLine, $errContext);
-		$metadata   = $this->getMetadata($metadata, $error);
+		$error    = new ErrorException($errStr, $errNo, $errFile, $errLine, $errContext);
+		$metadata = $this->getMetadata($metadata, $error);
+
+		if (false === $this->shouldHandle($metadata))
+		{
+			return $this;
+		}
+
 		$categories = $metadata->getCategories();
 
 		foreach ($this->handlerManager->all($categories) as $handler)
@@ -244,10 +250,7 @@ class ErrorHandler
 			$handler->handleError($error, $metadata);
 		}
 
-		if ($this->stats)
-		{
-			$this->stats->addError();
-		}
+		$this->stats->addError();
 
 		return $this;
 	}
@@ -260,7 +263,13 @@ class ErrorHandler
 	 */
 	public function handleException(\Exception $exception, Metadata $metadata = null)
 	{
-		$metadata   = $this->getMetadata($metadata, $exception);
+		$metadata = $this->getMetadata($metadata, $exception);
+
+		if (false === $this->shouldHandle($metadata))
+		{
+			return $this;
+		}
+
 		$categories = $metadata->getCategories();
 
 		foreach ($this->handlerManager->all($categories) as $handler)
@@ -268,10 +277,7 @@ class ErrorHandler
 			$handler->handleException($exception, $metadata);
 		}
 
-		if ($this->stats)
-		{
-			$this->stats->addException();
-		}
+		$this->stats->addException();
 
 		return $this;
 	}
@@ -284,7 +290,13 @@ class ErrorHandler
 	 */
 	public function handleEvent($event, Metadata $metadata = null)
 	{
-		$metadata   = $this->getMetadata($metadata, null);
+		$metadata = $this->getMetadata($metadata, null);
+
+		if (false === $this->shouldHandle($metadata))
+		{
+			return $this;
+		}
+
 		$categories = $metadata->getCategories();
 
 		foreach ($this->handlerManager->all($categories) as $handler)
@@ -292,10 +304,7 @@ class ErrorHandler
 			$handler->handleEvent($event, $metadata);
 		}
 
-		if ($this->stats)
-		{
-			$this->stats->addEvent();
-		}
+		$this->stats->addEvent();
 
 		return $this;
 	}
@@ -356,5 +365,15 @@ class ErrorHandler
 		}
 
 		return $metadata;
+	}
+
+	/**
+	 * @param Metadata $metadata
+	 *
+	 * @return bool
+	 */
+	protected function shouldHandle(Metadata $metadata)
+	{
+		return Metadata::ACTION_PROCESS === $metadata->getAction();
 	}
 }

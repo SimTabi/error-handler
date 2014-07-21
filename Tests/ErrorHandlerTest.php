@@ -4,6 +4,7 @@ namespace prgTW\ErrorHandler\Tests;
 
 use prgTW\ErrorHandler\Error\Severity;
 use prgTW\ErrorHandler\ErrorHandler;
+use prgTW\ErrorHandler\Metadata\Metadata;
 
 class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -99,6 +100,13 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 			array(E_DEPRECATED, Severity::WARNING),
 			array(E_USER_DEPRECATED, Severity::WARNING),
 		);
+	}
+
+	public function testSkipping()
+	{
+		$this->assertEquals(0, $this->errorHandler->getStats()->getEventsHandled());
+		$this->errorHandler->handleEvent('event', (new Metadata)->setAction(Metadata::ACTION_SKIP));
+		$this->assertEquals(0, $this->errorHandler->getStats()->getEventsHandled());
 	}
 
 	public function setUp()
