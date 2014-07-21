@@ -105,7 +105,9 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 	public function testSkipping()
 	{
 		$this->assertEquals(0, $this->errorHandler->getStats()->getEventsHandled());
-		$this->errorHandler->handleEvent('event', (new Metadata)->setAction(Metadata::ACTION_SKIP));
+		$metadata = new Metadata();
+		$metadata->setAction(Metadata::ACTION_SKIP);
+		$this->errorHandler->handleEvent('event', $metadata);
 		$this->assertEquals(0, $this->errorHandler->getStats()->getEventsHandled());
 	}
 
