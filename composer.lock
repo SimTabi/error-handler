@@ -7,16 +7,16 @@
     "packages": [
         {
             "name": "bugsnag/bugsnag",
-            "version": "v2.2.7",
+            "version": "v2.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bugsnag/bugsnag-php.git",
-                "reference": "3e44c354c7b86513001da5a34830e81b8d135434"
+                "reference": "64d09f1e95ac65e5a4744a219de324be0644d6c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bugsnag/bugsnag-php/zipball/3e44c354c7b86513001da5a34830e81b8d135434",
-                "reference": "3e44c354c7b86513001da5a34830e81b8d135434",
+                "url": "https://api.github.com/repos/bugsnag/bugsnag-php/zipball/64d09f1e95ac65e5a4744a219de324be0644d6c1",
+                "reference": "64d09f1e95ac65e5a4744a219de324be0644d6c1",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                 "logging",
                 "tracking"
             ],
-            "time": "2014-05-20 01:07:47"
+            "time": "2014-07-09 16:53:40"
         },
         {
             "name": "raven/raven",
