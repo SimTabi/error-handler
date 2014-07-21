@@ -10,10 +10,10 @@ class Metadata
 	const ACTION_SKIP    = 'skip';
 
 	/** @var array */
-	protected static $validActions = [
+	protected static $validActions = array(
 		self::ACTION_PROCESS,
 		self::ACTION_SKIP,
-	];
+	);
 
 	/** @var string */
 	protected $action = self::ACTION_PROCESS;
