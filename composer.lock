@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c6f024aee80991ce57599326acc86892",
+    "hash": "a8ff9b26dece2525811b0f81f59a84aa",
     "packages": [
         {
             "name": "bugsnag/bugsnag",
@@ -56,16 +56,16 @@
         },
         {
             "name": "raven/raven",
-            "version": "0.8.0",
+            "version": "0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/raven-php.git",
-                "reference": "d4b741736125f2b892e07903cd40450b53479290"
+                "reference": "1177f1c51110454f3a5bcca88aec3fa30e40e277"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/raven-php/zipball/d4b741736125f2b892e07903cd40450b53479290",
-                "reference": "d4b741736125f2b892e07903cd40450b53479290",
+                "url": "https://api.github.com/repos/getsentry/raven-php/zipball/1177f1c51110454f3a5bcca88aec3fa30e40e277",
+                "reference": "1177f1c51110454f3a5bcca88aec3fa30e40e277",
                 "shasum": ""
             },
             "require": {
@@ -80,7 +80,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.7.x-dev"
+                    "dev-master": "0.8.x-dev"
                 }
             },
             "autoload": {
@@ -104,7 +104,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2013-12-03 10:27:59"
+            "time": "2014-06-04 05:46:21"
         }
     ],
     "packages-dev": [
